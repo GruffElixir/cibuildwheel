@@ -22,7 +22,10 @@ inputs:
     required: false
     default: ''
   python-path:
-    description: 'Path to the host Python interpreter; skips setup-python when set'
+    description: >-
+      Path to a Python 3.11+ interpreter with pip. Setting this skips
+      setup-python. Defaults to setup-python on X64/ARM64 and python3 on other
+      architectures.
     required: false
     default: ''
 branding:
@@ -124,7 +127,7 @@ runs:
         EOF
       shell: bash
       env:
-        PYTHON: ${{ inputs.python-path || steps.python.outputs.python-path || (runner.os == 'Windows' && 'python' || 'python3') }}
+        PYTHON: ${{ inputs.python-path || steps.python.outputs.python-path || 'python3' }}
         INPUT_PACKAGE_DIR: ${{ inputs.package-dir }}
         INPUT_OUTPUT_DIR: ${{ inputs.output-dir }}
         INPUT_CONFIG_FILE: ${{ inputs.config-file }}
